@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TASKLY | Conecta con talento práctico</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0a1128;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #0d1b3d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo .icon {
+      background-color: #ff0048;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      width: 280px;
+      background-color: #18264a;
+      color: #fff;
+    }
+
+    .search-bar button {
+      background-color: #ff0048;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .main {
+      display: flex;
+      margin: 24px;
+      gap: 24px;
+    }
+
+    .sidebar {
+      background-color: #111b3a;
+      border-radius: 12px;
+      padding: 20px;
+      width: 250px;
+      height: fit-content;
+    }
+
+    .sidebar h2 {
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .filters label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #16244b;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      background-color: #223465;
+      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .category {
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+
+    .desc {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #cfd8e3;
+      line-height: 1.4;
+    }
+
+    .skills {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #a5b0d0;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .star {
+      color: gold;
+    }
+
+    .status {
+      margin-top: 6px;
+      font-weight: bold;
+      color: #00e676;
+    }
+
+    .status.unavailable {
+      color: #ff5252;
+    }
+
+    .district {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #9aa7d3;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+    }
+
+    .buttons button {
+      border: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .view-btn {
+      background-color: #223465;
+      color: #fff;
+    }
+
+    .request-btn {
+      background-color: #ff0048;
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      color: #999;
+      font-size: 0.8rem;
+      padding: 20px;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: #16244b;
+      padding: 20px;
+      border-radius: 12px;
+      width: 380px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+
+    .close-btn {
+      background-color: #ff0048;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .form-input {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      background-color: #1f2e5a;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="icon">T</div>
+      <div>
+        <h1>TASKLY</h1>
+        <small>Conecta con talento práctico — limpieza, jardinería y más</small>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar por nombre, tarea o distrito..." />
+      <button>Publicar tarea</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <aside class="sidebar">
+      <h2>Filtros</h2>
+      <div class="filters">
+        <label><input type="checkbox" id="disponibles"> Mostrar solo disponibles</label>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="cards" id="cards-container">
+        <!-- Tarjetas generadas dinámicamente -->
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    © 2025 TASKLY — Conectando habilidades prácticas con quienes las necesitan.
+  </footer>
+
+  <!-- MODAL PERFIL -->
+  <div class="modal" id="modalPerfil">
+    <div class="modal-content">
+      <h3 id="perfilNombre"></h3>
+      <p id="perfilCategoria"></p>
+      <p id="perfilDescripcion"></p>
+      <p id="perfilDistrito"></p>
+      <button class="close-btn" onclick="cerrarModal('modalPerfil')">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MODAL SOLICITUD -->
+  <div class="modal" id="modalSolicitud">
+    <div class="modal-content">
+      <h3>Solicitar servicio</h3>
+      <p id="solicitudNombre"></p>
+      <input type="text" class="form-input" placeholder="Tu nombre completo">
+      <input type="text" class="form-input" placeholder="Tu número de contacto">
+      <textarea class="form-input" placeholder="Describe brevemente la tarea..."></textarea>
+      <button class="close-btn" onclick="cerrarModal('modalSolicitud')">Enviar solicitud</button>
+    </div>
+  </div>
+
+  <script>
+    const profesionales = [
+      { nombre: "María Gonzales", categoria: "Limpieza doméstica", desc: "Profesional con 6 años de experiencia en limpieza y organización de hogares.", disponible: true, distrito: "Miraflores" },
+      { nombre: "Carlos Huamán", categoria: "Jardinería", desc: "Jardinero apasionado por el diseño y mantenimiento de jardines.", disponible: false, distrito: "San Isidro" },
+      { nombre: "Elena Ramos", categoria: "Cuidado de niños", desc: "Técnica en educación infantil, cariñosa y responsable.", disponible: true, distrito: "Surco" },
+      { nombre: "José Pérez", categoria: "Plomería", desc: "Más de 10 años solucionando problemas de agua en casas.", disponible: true, distrito: "Jesús María" },
+      { nombre: "Lucía Flores", categoria: "Cocina a domicilio", desc: "Chef especializada en menús saludables.", disponible: false, distrito: "San Miguel" },
+      { nombre: "Andrés Soto", categoria: "Electricidad", desc: "Técnico electricista certificado. Trabajo limpio y seguro.", disponible: true, distrito: "Miraflores" }
+    ];
+
+    const container = document.getElementById('cards-container');
+    const filtroDisponibles = document.getElementById('disponibles');
+
+    function renderCards() {
+      container.innerHTML = '';
+      profesionales.forEach((p, index) => {
+        if (filtroDisponibles.checked && !p.disponible) return;
+
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <div>
+            <div class="card-header">
+              <div class="avatar">${p.nombre.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
+              <div>
+                <div class="name">${p.nombre}</div>
+                <div class="category">${p.categoria}</div>
+              </div>
+            </div>
+            <p class="desc">${p.desc}</p>
+            <div class="status ${p.disponible ? '' : 'unavailable'}">${p.disponible ? 'Disponible' : 'No disponible'}</div>
+            <div class="district">Distrito: ${p.distrito}</div>
+          </div>
+          <div class="buttons">
+            <button class="view-btn" onclick="verPerfil(${index})">Ver perfil</button>
+            <button class="request-btn" onclick="solicitar(${index})">Solicitar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    filtroDisponibles.addEventListener('change', renderCards);
+    renderCards();
+
+    function verPerfil(i) {
+      const p = profesionales[i];
+      document.getElementById('perfilNombre').innerText = p.nombre;
+      document.getElementById('perfilCategoria').innerText = p.categoria;
+      document.getElementById('perfilDescripcion').innerText = p.desc;
+      document.getElementById('perfilDistrito').innerText = `Distrito: ${p.distrito}`;
+      abrirModal('modalPerfil');
+    }
+
+    function solicitar(i) {
+      const p = profesionales[i];
+      document.getElementById('solicitudNombre').innerText = `Solicitando a: ${p.nombre}`;
+      abrirModal('modalSolicitud');
+    }
+
+    function abrirModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function cerrarModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+  </script>
+</body>
+</html>
